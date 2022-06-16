@@ -96,8 +96,8 @@ def seperate_spam_ham(df):
 
 
 def calculate_constants(spam, ham, vocab):
-    p_spam = len(spam)
-    p_ham = len(ham)
+    p_spam = len(spam) / (len(spam) + len(ham))
+    p_ham = len(ham) / (len(spam) + len(ham))
 
     n_spam = 0  # sum of all words in spam messages
     for row in spam:
@@ -173,7 +173,7 @@ def classify(message, constants, spam_parameters, ham_parameters):
         result = 0
         # print("Ham")
     else:
-        pass
+        result = 0
         # print("Equal probs")
 
     # print(f"Probability of spam: {p_spam_given_message}")
@@ -236,7 +236,7 @@ def calculate_metrics(predicted_results, actual_results):
             false_positives += 1
 
     accuracy = correct / total
-    precision = true_positives / total_positives
+    precision = true_positives / (true_positives + false_positives)
     recall = true_positives / (true_positives + false_negatives)
     f1_score = (2 * precision * recall) / (precision + recall)
 
